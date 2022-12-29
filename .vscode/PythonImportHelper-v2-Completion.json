@@ -32,6 +32,14 @@
         "documentation": {}
     },
     {
+        "label": "randrange",
+        "importPath": "random",
+        "description": "random",
+        "isExtraImport": true,
+        "detail": "random",
+        "documentation": {}
+    },
+    {
         "label": "Post",
         "kind": 6,
         "importPath": "main",
@@ -41,11 +49,20 @@
         "documentation": {}
     },
     {
+        "label": "find_post",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def find_post(id):\n    for post in my_post:\n        if post[\"id\"] == int(id):\n            return post\n@app.get(\"/\")\ndef root():\n    return {\"message\": \"Welcome to my python api\"}\n@app.get(\"/posts\")\ndef get_post():\n    return { \"data\": my_post}",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
         "label": "root",
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def root():\n    return {\"message\": \"Welcome to my python api\"}\n@app.get(\"/posts\")\ndef get_post():\n    return { \"data\": my_post}\n@app.post(\"/posts\")\ndef create_post(post: Post):\n    post = post.dict()\n    print(post)\n    return {\"data\": post}",
+        "peekOfCode": "def root():\n    return {\"message\": \"Welcome to my python api\"}\n@app.get(\"/posts\")\ndef get_post():\n    return { \"data\": my_post}\n@app.get(\"/posts/{id}\")\ndef get_post(id: int):\n    post = find_post(id)\n    return {\"data\": post}\n@app.post(\"/posts\")",
         "detail": "main",
         "documentation": {}
     },
@@ -54,7 +71,16 @@
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def get_post():\n    return { \"data\": my_post}\n@app.post(\"/posts\")\ndef create_post(post: Post):\n    post = post.dict()\n    print(post)\n    return {\"data\": post}",
+        "peekOfCode": "def get_post():\n    return { \"data\": my_post}\n@app.get(\"/posts/{id}\")\ndef get_post(id: int):\n    post = find_post(id)\n    return {\"data\": post}\n@app.post(\"/posts\")\ndef create_post(post: Post):\n    dict_post = post.dict()\n    dict_post[\"id\"] = randrange(0, 1000000)",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "get_post",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def get_post(id: int):\n    post = find_post(id)\n    return {\"data\": post}\n@app.post(\"/posts\")\ndef create_post(post: Post):\n    dict_post = post.dict()\n    dict_post[\"id\"] = randrange(0, 1000000)\n    my_post.append(dict_post)\n    print(my_post)\n    return {\"data\": dict_post}",
         "detail": "main",
         "documentation": {}
     },
@@ -63,7 +89,7 @@
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def create_post(post: Post):\n    post = post.dict()\n    print(post)\n    return {\"data\": post}",
+        "peekOfCode": "def create_post(post: Post):\n    dict_post = post.dict()\n    dict_post[\"id\"] = randrange(0, 1000000)\n    my_post.append(dict_post)\n    print(my_post)\n    return {\"data\": dict_post}",
         "detail": "main",
         "documentation": {}
     },

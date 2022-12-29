@@ -77,7 +77,16 @@
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def find_post(id):\n    for post in my_post:\n        if post[\"id\"] == int(id):\n            return post\n@app.get(\"/\")\ndef root():\n    return {\"message\": \"Welcome to my python api\"}\n@app.get(\"/posts\")\ndef get_post():\n    return { \"data\": my_post}",
+        "peekOfCode": "def find_post(id):\n    for post in my_post:\n        if post[\"id\"] == int(id):\n            return post\ndef find_index(id):\n    for i, post in enumerate(my_post):\n        if post[\"id\"] == id:\n            return i\n@app.get(\"/\")\ndef root():",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "find_index",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def find_index(id):\n    for i, post in enumerate(my_post):\n        if post[\"id\"] == id:\n            return i\n@app.get(\"/\")\ndef root():\n    return {\"message\": \"Welcome to my python api\"}\n@app.get(\"/posts\")\ndef get_post():\n    return { \"data\": my_post}",
         "detail": "main",
         "documentation": {}
     },
@@ -86,7 +95,7 @@
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def root():\n    return {\"message\": \"Welcome to my python api\"}\n@app.get(\"/posts\")\ndef get_post():\n    return { \"data\": my_post}\n@app.get(\"/posts/latest\")\ndef get_latest_post():\n    post = my_post[len(my_post) - 1]\n    return {\"data\": post}\n@app.get(\"/posts/{id}\")",
+        "peekOfCode": "def root():\n    return {\"message\": \"Welcome to my python api\"}\n@app.get(\"/posts\")\ndef get_post():\n    return { \"data\": my_post}\n@app.get(\"/posts/{id}\")\ndef get_post(id: int):\n    post = find_post(id)\n    if not post:\n        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f\"post with id: {id} does not exist\")",
         "detail": "main",
         "documentation": {}
     },
@@ -95,16 +104,7 @@
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def get_post():\n    return { \"data\": my_post}\n@app.get(\"/posts/latest\")\ndef get_latest_post():\n    post = my_post[len(my_post) - 1]\n    return {\"data\": post}\n@app.get(\"/posts/{id}\")\ndef get_post(id: int, response: Response):\n    post = find_post(id)\n    if not post:",
-        "detail": "main",
-        "documentation": {}
-    },
-    {
-        "label": "get_latest_post",
-        "kind": 2,
-        "importPath": "main",
-        "description": "main",
-        "peekOfCode": "def get_latest_post():\n    post = my_post[len(my_post) - 1]\n    return {\"data\": post}\n@app.get(\"/posts/{id}\")\ndef get_post(id: int, response: Response):\n    post = find_post(id)\n    if not post:\n        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f\"post with id: {id} does not exist\")\n        # response.status_code = status.HTTP_404_NOT_FOUND\n        # return {\"message\": f\"post id: {id} does not exist\"}",
+        "peekOfCode": "def get_post():\n    return { \"data\": my_post}\n@app.get(\"/posts/{id}\")\ndef get_post(id: int):\n    post = find_post(id)\n    if not post:\n        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f\"post with id: {id} does not exist\")\n    return {\"data\": post}\n@app.post(\"/posts\", status_code=status.HTTP_201_CREATED)\ndef create_post(post: Post):",
         "detail": "main",
         "documentation": {}
     },
@@ -113,7 +113,7 @@
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def get_post(id: int, response: Response):\n    post = find_post(id)\n    if not post:\n        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f\"post with id: {id} does not exist\")\n        # response.status_code = status.HTTP_404_NOT_FOUND\n        # return {\"message\": f\"post id: {id} does not exist\"}\n    return {\"data\": post}\n@app.post(\"/posts\", status_code=status.HTTP_201_CREATED)\ndef create_post(post: Post):\n    dict_post = post.dict()",
+        "peekOfCode": "def get_post(id: int):\n    post = find_post(id)\n    if not post:\n        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f\"post with id: {id} does not exist\")\n    return {\"data\": post}\n@app.post(\"/posts\", status_code=status.HTTP_201_CREATED)\ndef create_post(post: Post):\n    dict_post = post.dict()\n    dict_post[\"id\"] = randrange(0, 100)\n    my_post.append(dict_post)",
         "detail": "main",
         "documentation": {}
     },
@@ -122,7 +122,16 @@
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def create_post(post: Post):\n    dict_post = post.dict()\n    dict_post[\"id\"] = randrange(0, 100)\n    my_post.append(dict_post)\n    return {\"data\": dict_post}",
+        "peekOfCode": "def create_post(post: Post):\n    dict_post = post.dict()\n    dict_post[\"id\"] = randrange(0, 100)\n    my_post.append(dict_post)\n    return {\"data\": dict_post}\n@app.delete(\"/posts/{id}\")\ndef delete_post(id: int):\n    index = find_index(id)\n    my_post.pop(index)\n    return {\"data\": my_post}",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "delete_post",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def delete_post(id: int):\n    index = find_index(id)\n    my_post.pop(index)\n    return {\"data\": my_post}",
         "detail": "main",
         "documentation": {}
     },

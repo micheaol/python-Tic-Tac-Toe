@@ -36,7 +36,7 @@
         "kind": 6,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "class Post(BaseModel):\n    title: str\n    content: str\n    rating: Optional[int] = None\n@app.get(\"/\")\ndef root():\n    return {\"message\": \"Welcome to my python api\"}\n@app.post(\"/post\")\ndef create_post(new_post: Post):\n    return new_post",
+        "peekOfCode": "class Post(BaseModel):\n    title: str\n    content: str\n    rating: Optional[int] = None\nmy_post = [\n    {\n        \"id\": 1,\n        \"title\": \"Post 1\",\n        \"content\": \"Content of post 1\",\n    },",
         "detail": "main",
         "documentation": {}
     },
@@ -45,7 +45,16 @@
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def root():\n    return {\"message\": \"Welcome to my python api\"}\n@app.post(\"/post\")\ndef create_post(new_post: Post):\n    return new_post",
+        "peekOfCode": "def root():\n    return {\"message\": \"Welcome to my python api\"}\n@app.get(\"/posts\")\ndef get_post():\n    return { \"data\": my_post}\n@app.post(\"/posts\")\ndef create_post(post: Post):\n    post = post.dict()\n    print(post)\n    return {\"data\": post}",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "get_post",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def get_post():\n    return { \"data\": my_post}\n@app.post(\"/posts\")\ndef create_post(post: Post):\n    post = post.dict()\n    print(post)\n    return {\"data\": post}",
         "detail": "main",
         "documentation": {}
     },
@@ -54,7 +63,7 @@
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def create_post(new_post: Post):\n    return new_post",
+        "peekOfCode": "def create_post(post: Post):\n    post = post.dict()\n    print(post)\n    return {\"data\": post}",
         "detail": "main",
         "documentation": {}
     },
@@ -63,7 +72,16 @@
         "kind": 5,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "app = FastAPI()\nclass Post(BaseModel):\n    title: str\n    content: str\n    rating: Optional[int] = None\n@app.get(\"/\")\ndef root():\n    return {\"message\": \"Welcome to my python api\"}\n@app.post(\"/post\")\ndef create_post(new_post: Post):",
+        "peekOfCode": "app = FastAPI()\nclass Post(BaseModel):\n    title: str\n    content: str\n    rating: Optional[int] = None\nmy_post = [\n    {\n        \"id\": 1,\n        \"title\": \"Post 1\",\n        \"content\": \"Content of post 1\",",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "my_post",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "my_post = [\n    {\n        \"id\": 1,\n        \"title\": \"Post 1\",\n        \"content\": \"Content of post 1\",\n    },\n    {\n        \"id\": 2,\n        \"title\": \"Post 2\",\n        \"content\": \"Content of post 2\",",
         "detail": "main",
         "documentation": {}
     }

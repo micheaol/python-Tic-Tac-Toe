@@ -12,11 +12,36 @@ class Post(BaseModel):
     rating: Optional[int] = None
 
 
+my_post = [
+    {
+        "id": 1,
+        "title": "Post 1",
+        "content": "Content of post 1",
+    },
+    {
+        "id": 2,
+        "title": "Post 2",
+        "content": "Content of post 2",
+    },
+    {
+        "id": 3,
+        "title": "Post 3",
+        "content": "Content of post 3",
+    },
+]
+
 @app.get("/")
 def root():
     return {"message": "Welcome to my python api"}
 
 
-@app.post("/post")
-def create_post(new_post: Post):
-    return new_post
+@app.get("/posts")
+def get_post():
+    return { "data": my_post}
+
+
+@app.post("/posts")
+def create_post(post: Post):
+    post = post.dict()
+    print(post)
+    return {"data": post}

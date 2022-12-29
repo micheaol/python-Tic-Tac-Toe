@@ -68,8 +68,10 @@ def create_post(post: Post):
     return {"data": dict_post}
 
 
-@app.delete("/posts/{id}")
+@app.delete("/posts/{id}", status_code= status.HTTP_204_NO_CONTENT)
 def delete_post(id: int):
     index = find_index(id)
+    if index == None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"post with id: {id} does not exist")
     my_post.pop(index)
-    return {"data": my_post}
+    return {"data": "post deleted successfully"}

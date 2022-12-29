@@ -122,7 +122,7 @@
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def create_post(post: Post):\n    dict_post = post.dict()\n    dict_post[\"id\"] = randrange(0, 100)\n    my_post.append(dict_post)\n    return {\"data\": dict_post}\n@app.delete(\"/posts/{id}\")\ndef delete_post(id: int):\n    index = find_index(id)\n    my_post.pop(index)\n    return {\"data\": my_post}",
+        "peekOfCode": "def create_post(post: Post):\n    dict_post = post.dict()\n    dict_post[\"id\"] = randrange(0, 100)\n    my_post.append(dict_post)\n    return {\"data\": dict_post}\n@app.delete(\"/posts/{id}\", status_code= status.HTTP_204_NO_CONTENT)\ndef delete_post(id: int):\n    index = find_index(id)\n    if index == None:\n        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f\"post with id: {id} does not exist\")",
         "detail": "main",
         "documentation": {}
     },
@@ -131,7 +131,7 @@
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def delete_post(id: int):\n    index = find_index(id)\n    my_post.pop(index)\n    return {\"data\": my_post}",
+        "peekOfCode": "def delete_post(id: int):\n    index = find_index(id)\n    if index == None:\n        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f\"post with id: {id} does not exist\")\n    my_post.pop(index)\n    return {\"data\": \"post deleted successfully\"}",
         "detail": "main",
         "documentation": {}
     },

@@ -57,7 +57,7 @@ def get_post(id: int):
 @app.post("/posts")
 def create_post(post: Post):
     dict_post = post.dict()
-    dict_post["id"] = randrange(0, 1000000)
+    dict_post["id"] = randrange(0, 100)
     my_post.append(dict_post)
     print(my_post)
     return {"data": dict_post}

@@ -71,7 +71,7 @@
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def get_post():\n    return { \"data\": my_post}\n@app.get(\"/posts/{id}\")\ndef get_post(id: int):\n    post = find_post(id)\n    return {\"data\": post}\n@app.post(\"/posts\")\ndef create_post(post: Post):\n    dict_post = post.dict()\n    dict_post[\"id\"] = randrange(0, 1000000)",
+        "peekOfCode": "def get_post():\n    return { \"data\": my_post}\n@app.get(\"/posts/{id}\")\ndef get_post(id: int):\n    post = find_post(id)\n    return {\"data\": post}\n@app.post(\"/posts\")\ndef create_post(post: Post):\n    dict_post = post.dict()\n    dict_post[\"id\"] = randrange(0, 100)",
         "detail": "main",
         "documentation": {}
     },
@@ -80,7 +80,7 @@
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def get_post(id: int):\n    post = find_post(id)\n    return {\"data\": post}\n@app.post(\"/posts\")\ndef create_post(post: Post):\n    dict_post = post.dict()\n    dict_post[\"id\"] = randrange(0, 1000000)\n    my_post.append(dict_post)\n    print(my_post)\n    return {\"data\": dict_post}",
+        "peekOfCode": "def get_post(id: int):\n    post = find_post(id)\n    return {\"data\": post}\n@app.post(\"/posts\")\ndef create_post(post: Post):\n    dict_post = post.dict()\n    dict_post[\"id\"] = randrange(0, 100)\n    my_post.append(dict_post)\n    print(my_post)\n    return {\"data\": dict_post}",
         "detail": "main",
         "documentation": {}
     },
@@ -89,7 +89,7 @@
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def create_post(post: Post):\n    dict_post = post.dict()\n    dict_post[\"id\"] = randrange(0, 1000000)\n    my_post.append(dict_post)\n    print(my_post)\n    return {\"data\": dict_post}",
+        "peekOfCode": "def create_post(post: Post):\n    dict_post = post.dict()\n    dict_post[\"id\"] = randrange(0, 100)\n    my_post.append(dict_post)\n    print(my_post)\n    return {\"data\": dict_post}",
         "detail": "main",
         "documentation": {}
     },

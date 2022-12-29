@@ -16,6 +16,30 @@
         "documentation": {}
     },
     {
+        "label": "Response",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "status",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "HTTPException",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
         "label": "Body",
         "importPath": "fastapi.params",
         "description": "fastapi.params",
@@ -62,7 +86,7 @@
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def root():\n    return {\"message\": \"Welcome to my python api\"}\n@app.get(\"/posts\")\ndef get_post():\n    return { \"data\": my_post}\n@app.get(\"/posts/{id}\")\ndef get_post(id: int):\n    post = find_post(id)\n    return {\"data\": post}\n@app.post(\"/posts\")",
+        "peekOfCode": "def root():\n    return {\"message\": \"Welcome to my python api\"}\n@app.get(\"/posts\")\ndef get_post():\n    return { \"data\": my_post}\n@app.get(\"/posts/latest\")\ndef get_latest_post():\n    post = my_post[len(my_post) - 1]\n    return {\"data\": post}\n@app.get(\"/posts/{id}\")",
         "detail": "main",
         "documentation": {}
     },
@@ -71,7 +95,16 @@
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def get_post():\n    return { \"data\": my_post}\n@app.get(\"/posts/{id}\")\ndef get_post(id: int):\n    post = find_post(id)\n    return {\"data\": post}\n@app.post(\"/posts\")\ndef create_post(post: Post):\n    dict_post = post.dict()\n    dict_post[\"id\"] = randrange(0, 100)",
+        "peekOfCode": "def get_post():\n    return { \"data\": my_post}\n@app.get(\"/posts/latest\")\ndef get_latest_post():\n    post = my_post[len(my_post) - 1]\n    return {\"data\": post}\n@app.get(\"/posts/{id}\")\ndef get_post(id: int, response: Response):\n    post = find_post(id)\n    if not post:",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "get_latest_post",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def get_latest_post():\n    post = my_post[len(my_post) - 1]\n    return {\"data\": post}\n@app.get(\"/posts/{id}\")\ndef get_post(id: int, response: Response):\n    post = find_post(id)\n    if not post:\n        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f\"post with id: {id} does not exist\")\n        # response.status_code = status.HTTP_404_NOT_FOUND\n        # return {\"message\": f\"post id: {id} does not exist\"}",
         "detail": "main",
         "documentation": {}
     },
@@ -80,7 +113,7 @@
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def get_post(id: int):\n    post = find_post(id)\n    return {\"data\": post}\n@app.post(\"/posts\")\ndef create_post(post: Post):\n    dict_post = post.dict()\n    dict_post[\"id\"] = randrange(0, 100)\n    my_post.append(dict_post)\n    print(my_post)\n    return {\"data\": dict_post}",
+        "peekOfCode": "def get_post(id: int, response: Response):\n    post = find_post(id)\n    if not post:\n        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f\"post with id: {id} does not exist\")\n        # response.status_code = status.HTTP_404_NOT_FOUND\n        # return {\"message\": f\"post id: {id} does not exist\"}\n    return {\"data\": post}\n@app.post(\"/posts\", status_code=status.HTTP_201_CREATED)\ndef create_post(post: Post):\n    dict_post = post.dict()",
         "detail": "main",
         "documentation": {}
     },
@@ -89,7 +122,7 @@
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def create_post(post: Post):\n    dict_post = post.dict()\n    dict_post[\"id\"] = randrange(0, 100)\n    my_post.append(dict_post)\n    print(my_post)\n    return {\"data\": dict_post}",
+        "peekOfCode": "def create_post(post: Post):\n    dict_post = post.dict()\n    dict_post[\"id\"] = randrange(0, 100)\n    my_post.append(dict_post)\n    return {\"data\": dict_post}",
         "detail": "main",
         "documentation": {}
     },

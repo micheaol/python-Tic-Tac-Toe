@@ -131,7 +131,16 @@
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def delete_post(id: int):\n    index = find_index(id)\n    if index == None:\n        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f\"post with id: {id} does not exist\")\n    my_post.pop(index)\n    return {\"data\": \"post deleted successfully\"}",
+        "peekOfCode": "def delete_post(id: int):\n    index = find_index(id)\n    if index == None:\n        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f\"post with id: {id} does not exist\")\n    my_post.pop(index)\n    return {\"data\": \"post deleted successfully\"}\n@app.put(\"/posts/{id}\")\ndef update_post(id: int, post: Post):\n    index = find_index(id)\n    if index == None:",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "update_post",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def update_post(id: int, post: Post):\n    index = find_index(id)\n    if index == None:\n        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f\"post with id: {id} does not exist\")\n    post_dict = post.dict()\n    post_dict[\"id\"] = id\n    my_post[index] = post_dict\n    return {\"data\": post_dict}",
         "detail": "main",
         "documentation": {}
     },

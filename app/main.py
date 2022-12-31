@@ -13,7 +13,7 @@ app = FastAPI()
 class Post(BaseModel):
     title: str
     content: str
-    rating: Optional[int] = None
+    published: bool = False
 
 # Database connection:
 while True:
@@ -78,10 +78,14 @@ def get_post(id: int):
 
 @app.post("/posts", status_code=status.HTTP_201_CREATED)
 def create_post(post: Post):
-    dict_post = post.dict()
-    dict_post["id"] = randrange(0, 100)
-    my_post.append(dict_post)
-    return {"data": dict_post}
+     cursor.execute("""INSERT INTO posts (title, content, published) VALUES (%s, %s, %s) RETURNING * """, (post.title, post.content, post.published))
+    # dict_post = post.dict()
+    # dict_post["id"] = randrange(0, 100)
+    # my_post.append(dict_post)
+     new_post = cursor.fetchone()
+
+     conn.commit()
+     return {"data": new_post}
 
 
 @app.delete("/posts/{id}", status_code= status.HTTP_204_NO_CONTENT)

@@ -94,7 +94,7 @@
         "kind": 6,
         "importPath": "app.main",
         "description": "app.main",
-        "peekOfCode": "class Post(BaseModel):\n    title: str\n    content: str\n    rating: Optional[int] = None\n# Database connection:\nwhile True:\n    try:\n        conn = psycopg2.connect(host='localhost', database='python_api', user='postgres', password='PassWord', cursor_factory=RealDictCursor)\n        cursor = conn.cursor()\n        print('Database connection was successfull!')",
+        "peekOfCode": "class Post(BaseModel):\n    title: str\n    content: str\n    published: bool = False\n# Database connection:\nwhile True:\n    try:\n        conn = psycopg2.connect(host='localhost', database='python_api', user='postgres', password='PassWord', cursor_factory=RealDictCursor)\n        cursor = conn.cursor()\n        print('Database connection was successfull!')",
         "detail": "app.main",
         "documentation": {}
     },
@@ -139,7 +139,7 @@
         "kind": 2,
         "importPath": "app.main",
         "description": "app.main",
-        "peekOfCode": "def get_post(id: int):\n    post = find_post(id)\n    if not post:\n        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f\"post with id: {id} does not exist\")\n    return {\"data\": post}\n@app.post(\"/posts\", status_code=status.HTTP_201_CREATED)\ndef create_post(post: Post):\n    dict_post = post.dict()\n    dict_post[\"id\"] = randrange(0, 100)\n    my_post.append(dict_post)",
+        "peekOfCode": "def get_post(id: int):\n    post = find_post(id)\n    if not post:\n        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f\"post with id: {id} does not exist\")\n    return {\"data\": post}\n@app.post(\"/posts\", status_code=status.HTTP_201_CREATED)\ndef create_post(post: Post):\n     cursor.execute(\"\"\"INSERT INTO posts (title, content, published) VALUES (%s, %s, %s) RETURNING * \"\"\", (post.title, post.content, post.published))\n    # dict_post = post.dict()\n    # dict_post[\"id\"] = randrange(0, 100)",
         "detail": "app.main",
         "documentation": {}
     },
@@ -148,7 +148,7 @@
         "kind": 2,
         "importPath": "app.main",
         "description": "app.main",
-        "peekOfCode": "def create_post(post: Post):\n    dict_post = post.dict()\n    dict_post[\"id\"] = randrange(0, 100)\n    my_post.append(dict_post)\n    return {\"data\": dict_post}\n@app.delete(\"/posts/{id}\", status_code= status.HTTP_204_NO_CONTENT)\ndef delete_post(id: int):\n    index = find_index(id)\n    if index == None:\n        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f\"post with id: {id} does not exist\")",
+        "peekOfCode": "def create_post(post: Post):\n     cursor.execute(\"\"\"INSERT INTO posts (title, content, published) VALUES (%s, %s, %s) RETURNING * \"\"\", (post.title, post.content, post.published))\n    # dict_post = post.dict()\n    # dict_post[\"id\"] = randrange(0, 100)\n    # my_post.append(dict_post)\n     new_post = cursor.fetchone()\n     conn.commit()\n     return {\"data\": new_post}\n@app.delete(\"/posts/{id}\", status_code= status.HTTP_204_NO_CONTENT)\ndef delete_post(id: int):",
         "detail": "app.main",
         "documentation": {}
     },
@@ -175,7 +175,7 @@
         "kind": 5,
         "importPath": "app.main",
         "description": "app.main",
-        "peekOfCode": "app = FastAPI()\nclass Post(BaseModel):\n    title: str\n    content: str\n    rating: Optional[int] = None\n# Database connection:\nwhile True:\n    try:\n        conn = psycopg2.connect(host='localhost', database='python_api', user='postgres', password='PassWord', cursor_factory=RealDictCursor)\n        cursor = conn.cursor()",
+        "peekOfCode": "app = FastAPI()\nclass Post(BaseModel):\n    title: str\n    content: str\n    published: bool = False\n# Database connection:\nwhile True:\n    try:\n        conn = psycopg2.connect(host='localhost', database='python_api', user='postgres', password='PassWord', cursor_factory=RealDictCursor)\n        cursor = conn.cursor()",
         "detail": "app.main",
         "documentation": {}
     },

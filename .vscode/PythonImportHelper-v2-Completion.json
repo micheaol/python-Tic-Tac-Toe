@@ -121,7 +121,7 @@
         "kind": 2,
         "importPath": "app.main",
         "description": "app.main",
-        "peekOfCode": "def root():\n    return {\"message\": \"Welcome to my python api\"}\n@app.get(\"/posts\")\ndef get_post():\n    cursor.execute(\"\"\"SELECT * FROM posts\"\"\")\n    posts = cursor.fetchall()\n    return { \"data\": posts}\n@app.get(\"/posts/{id}\")\ndef get_post(id: int):\n    post = find_post(id)",
+        "peekOfCode": "def root():\n    return {\"message\": \"Welcome to my python api\"}\n@app.get(\"/posts\")\ndef get_post():\n    cursor.execute(\"\"\"SELECT * FROM posts\"\"\")\n    posts = cursor.fetchall()\n    return { \"data\": posts}\n@app.get(\"/posts/{id}\")\ndef get_post(id: int):\n    cursor.execute(\"\"\"SELECT * FROM posts WHERE id = %s \"\"\", (str(id)))",
         "detail": "app.main",
         "documentation": {}
     },
@@ -130,7 +130,7 @@
         "kind": 2,
         "importPath": "app.main",
         "description": "app.main",
-        "peekOfCode": "def get_post():\n    cursor.execute(\"\"\"SELECT * FROM posts\"\"\")\n    posts = cursor.fetchall()\n    return { \"data\": posts}\n@app.get(\"/posts/{id}\")\ndef get_post(id: int):\n    post = find_post(id)\n    if not post:\n        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f\"post with id: {id} does not exist\")\n    return {\"data\": post}",
+        "peekOfCode": "def get_post():\n    cursor.execute(\"\"\"SELECT * FROM posts\"\"\")\n    posts = cursor.fetchall()\n    return { \"data\": posts}\n@app.get(\"/posts/{id}\")\ndef get_post(id: int):\n    cursor.execute(\"\"\"SELECT * FROM posts WHERE id = %s \"\"\", (str(id)))\n    post = cursor.fetchone()\n    if not post:\n        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f\"post with id: {id} does not exist\")",
         "detail": "app.main",
         "documentation": {}
     },
@@ -139,7 +139,7 @@
         "kind": 2,
         "importPath": "app.main",
         "description": "app.main",
-        "peekOfCode": "def get_post(id: int):\n    post = find_post(id)\n    if not post:\n        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f\"post with id: {id} does not exist\")\n    return {\"data\": post}\n@app.post(\"/posts\", status_code=status.HTTP_201_CREATED)\ndef create_post(post: Post):\n     cursor.execute(\"\"\"INSERT INTO posts (title, content, published) VALUES (%s, %s, %s) RETURNING * \"\"\", (post.title, post.content, post.published))\n    # dict_post = post.dict()\n    # dict_post[\"id\"] = randrange(0, 100)",
+        "peekOfCode": "def get_post(id: int):\n    cursor.execute(\"\"\"SELECT * FROM posts WHERE id = %s \"\"\", (str(id)))\n    post = cursor.fetchone()\n    if not post:\n        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f\"post with id: {id} does not exist\")\n    return {\"data\": post}\n@app.post(\"/posts\", status_code=status.HTTP_201_CREATED)\ndef create_post(post: Post):\n     cursor.execute(\"\"\"INSERT INTO posts (title, content, published) VALUES (%s, %s, %s) RETURNING * \"\"\", (post.title, post.content, post.published))\n    # dict_post = post.dict()",
         "detail": "app.main",
         "documentation": {}
     },
@@ -157,7 +157,7 @@
         "kind": 2,
         "importPath": "app.main",
         "description": "app.main",
-        "peekOfCode": "def delete_post(id: int):\n    index = find_index(id)\n    if index == None:\n        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f\"post with id: {id} does not exist\")\n    my_post.pop(index)\n    return {\"data\": \"post deleted successfully\"}\n@app.put(\"/posts/{id}\")\ndef update_post(id: int, post: Post):\n    index = find_index(id)\n    if index == None:",
+        "peekOfCode": "def delete_post(id: int):\n    cursor.execute(\"\"\"DELETE FROM posts WHERE id = %s RETURNING * \"\"\", (str(id),))\n    deleted_post = cursor.fetchone()\n    conn.commit()\n    if deleted_post == None:\n        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f\"post with id: {id} does not exist\")\n    return {\"data\": \"Post has been deleted successfully\"}\n@app.put(\"/posts/{id}\")\ndef update_post(id: int, post: Post):\n    cursor.execute(\"\"\"UPDATE posts SET title = %s, content = %s, published = %s WHERE id = %s RETURNING *\"\"\", (post.title, post.content, post.published, (str(id))))",
         "detail": "app.main",
         "documentation": {}
     },
@@ -166,7 +166,7 @@
         "kind": 2,
         "importPath": "app.main",
         "description": "app.main",
-        "peekOfCode": "def update_post(id: int, post: Post):\n    index = find_index(id)\n    if index == None:\n        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f\"post with id: {id} does not exist\")\n    post_dict = post.dict()\n    post_dict[\"id\"] = id\n    my_post[index] = post_dict\n    return {\"data\": post_dict}",
+        "peekOfCode": "def update_post(id: int, post: Post):\n    cursor.execute(\"\"\"UPDATE posts SET title = %s, content = %s, published = %s WHERE id = %s RETURNING *\"\"\", (post.title, post.content, post.published, (str(id))))\n    updted_post = cursor.fetchone()\n    conn.commit()\n    if updted_post == None:\n        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f\"post with id: {id} does not exist\")\n    return {\"data\": updted_post}",
         "detail": "app.main",
         "documentation": {}
     },

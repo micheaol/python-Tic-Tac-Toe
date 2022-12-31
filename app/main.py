@@ -5,7 +5,7 @@ from pydantic import BaseModel
 from random import randrange
 import psycopg2
 from psycopg2.extras import RealDictCursor
-
+import time
 
 app = FastAPI()
 
@@ -16,15 +16,17 @@ class Post(BaseModel):
     rating: Optional[int] = None
 
 # Database connection:
-try:
-    conn = psycopg2.connect(host='localhost', database='python_api', user='postgres', password='PassWord', cursor_factory=RealDictCursor)
-    cursor = conn.cursor()
-    print('Database connection was successfull!')
+while True:
+    try:
+        conn = psycopg2.connect(host='localhost', database='python_api', user='postgres', password='PassWord', cursor_factory=RealDictCursor)
+        cursor = conn.cursor()
+        print('Database connection was successfull!')
+        break
 
-except Exception as error:
-    print("Database connection failed")
-    print("error: ", error)
-
+    except Exception as error:
+        print("Database connection failed")
+        print("error: ", error)
+        time.sleep(3)
 my_post = [
     {
         "id": 1,
@@ -61,7 +63,9 @@ def root():
 
 @app.get("/posts")
 def get_post():
-    return { "data": my_post}
+    cursor.execute("""SELECT * FROM posts""")
+    posts = cursor.fetchall()
+    return { "data": posts}
 
 
 @app.get("/posts/{id}")

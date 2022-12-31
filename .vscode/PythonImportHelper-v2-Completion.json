@@ -81,11 +81,20 @@
         "documentation": {}
     },
     {
+        "label": "time",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "time",
+        "description": "time",
+        "detail": "time",
+        "documentation": {}
+    },
+    {
         "label": "Post",
         "kind": 6,
         "importPath": "app.main",
         "description": "app.main",
-        "peekOfCode": "class Post(BaseModel):\n    title: str\n    content: str\n    rating: Optional[int] = None\n# Database connection:\ntry:\n    conn = psycopg2.connect(host='localhost', database='python_api', user='postgres', password='PassWord', cursor_factory=RealDictCursor)\n    cursor = conn.cursor()\n    print('Database connection was successfull!')\nexcept Exception as error:",
+        "peekOfCode": "class Post(BaseModel):\n    title: str\n    content: str\n    rating: Optional[int] = None\n# Database connection:\nwhile True:\n    try:\n        conn = psycopg2.connect(host='localhost', database='python_api', user='postgres', password='PassWord', cursor_factory=RealDictCursor)\n        cursor = conn.cursor()\n        print('Database connection was successfull!')",
         "detail": "app.main",
         "documentation": {}
     },
@@ -103,7 +112,7 @@
         "kind": 2,
         "importPath": "app.main",
         "description": "app.main",
-        "peekOfCode": "def find_index(id):\n    for i, post in enumerate(my_post):\n        if post[\"id\"] == id:\n            return i\n@app.get(\"/\")\ndef root():\n    return {\"message\": \"Welcome to my python api\"}\n@app.get(\"/posts\")\ndef get_post():\n    return { \"data\": my_post}",
+        "peekOfCode": "def find_index(id):\n    for i, post in enumerate(my_post):\n        if post[\"id\"] == id:\n            return i\n@app.get(\"/\")\ndef root():\n    return {\"message\": \"Welcome to my python api\"}\n@app.get(\"/posts\")\ndef get_post():\n    cursor.execute(\"\"\"SELECT * FROM posts\"\"\")",
         "detail": "app.main",
         "documentation": {}
     },
@@ -112,7 +121,7 @@
         "kind": 2,
         "importPath": "app.main",
         "description": "app.main",
-        "peekOfCode": "def root():\n    return {\"message\": \"Welcome to my python api\"}\n@app.get(\"/posts\")\ndef get_post():\n    return { \"data\": my_post}\n@app.get(\"/posts/{id}\")\ndef get_post(id: int):\n    post = find_post(id)\n    if not post:\n        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f\"post with id: {id} does not exist\")",
+        "peekOfCode": "def root():\n    return {\"message\": \"Welcome to my python api\"}\n@app.get(\"/posts\")\ndef get_post():\n    cursor.execute(\"\"\"SELECT * FROM posts\"\"\")\n    posts = cursor.fetchall()\n    return { \"data\": posts}\n@app.get(\"/posts/{id}\")\ndef get_post(id: int):\n    post = find_post(id)",
         "detail": "app.main",
         "documentation": {}
     },
@@ -121,7 +130,7 @@
         "kind": 2,
         "importPath": "app.main",
         "description": "app.main",
-        "peekOfCode": "def get_post():\n    return { \"data\": my_post}\n@app.get(\"/posts/{id}\")\ndef get_post(id: int):\n    post = find_post(id)\n    if not post:\n        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f\"post with id: {id} does not exist\")\n    return {\"data\": post}\n@app.post(\"/posts\", status_code=status.HTTP_201_CREATED)\ndef create_post(post: Post):",
+        "peekOfCode": "def get_post():\n    cursor.execute(\"\"\"SELECT * FROM posts\"\"\")\n    posts = cursor.fetchall()\n    return { \"data\": posts}\n@app.get(\"/posts/{id}\")\ndef get_post(id: int):\n    post = find_post(id)\n    if not post:\n        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f\"post with id: {id} does not exist\")\n    return {\"data\": post}",
         "detail": "app.main",
         "documentation": {}
     },
@@ -166,7 +175,7 @@
         "kind": 5,
         "importPath": "app.main",
         "description": "app.main",
-        "peekOfCode": "app = FastAPI()\nclass Post(BaseModel):\n    title: str\n    content: str\n    rating: Optional[int] = None\n# Database connection:\ntry:\n    conn = psycopg2.connect(host='localhost', database='python_api', user='postgres', password='PassWord', cursor_factory=RealDictCursor)\n    cursor = conn.cursor()\n    print('Database connection was successfull!')",
+        "peekOfCode": "app = FastAPI()\nclass Post(BaseModel):\n    title: str\n    content: str\n    rating: Optional[int] = None\n# Database connection:\nwhile True:\n    try:\n        conn = psycopg2.connect(host='localhost', database='python_api', user='postgres', password='PassWord', cursor_factory=RealDictCursor)\n        cursor = conn.cursor()",
         "detail": "app.main",
         "documentation": {}
     },

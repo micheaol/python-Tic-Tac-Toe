@@ -1,5 +1,69 @@
 [
     {
+        "label": "create_engine",
+        "importPath": "sqlalchemy",
+        "description": "sqlalchemy",
+        "isExtraImport": true,
+        "detail": "sqlalchemy",
+        "documentation": {}
+    },
+    {
+        "label": "Column",
+        "importPath": "sqlalchemy",
+        "description": "sqlalchemy",
+        "isExtraImport": true,
+        "detail": "sqlalchemy",
+        "documentation": {}
+    },
+    {
+        "label": "Integer",
+        "importPath": "sqlalchemy",
+        "description": "sqlalchemy",
+        "isExtraImport": true,
+        "detail": "sqlalchemy",
+        "documentation": {}
+    },
+    {
+        "label": "String",
+        "importPath": "sqlalchemy",
+        "description": "sqlalchemy",
+        "isExtraImport": true,
+        "detail": "sqlalchemy",
+        "documentation": {}
+    },
+    {
+        "label": "Boolean",
+        "importPath": "sqlalchemy",
+        "description": "sqlalchemy",
+        "isExtraImport": true,
+        "detail": "sqlalchemy",
+        "documentation": {}
+    },
+    {
+        "label": "declarative_base",
+        "importPath": "sqlalchemy.ext.declarative",
+        "description": "sqlalchemy.ext.declarative",
+        "isExtraImport": true,
+        "detail": "sqlalchemy.ext.declarative",
+        "documentation": {}
+    },
+    {
+        "label": "sessionmaker",
+        "importPath": "sqlalchemy.orm",
+        "description": "sqlalchemy.orm",
+        "isExtraImport": true,
+        "detail": "sqlalchemy.orm",
+        "documentation": {}
+    },
+    {
+        "label": "Session",
+        "importPath": "sqlalchemy.orm",
+        "description": "sqlalchemy.orm",
+        "isExtraImport": true,
+        "detail": "sqlalchemy.orm",
+        "documentation": {}
+    },
+    {
         "label": "Optional",
         "importPath": "typing",
         "description": "typing",
@@ -33,6 +97,14 @@
     },
     {
         "label": "HTTPException",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "Depends",
         "importPath": "fastapi",
         "description": "fastapi",
         "isExtraImport": true,
@@ -90,6 +162,59 @@
         "documentation": {}
     },
     {
+        "label": "null",
+        "importPath": "sqlalchemy.sql.expression",
+        "description": "sqlalchemy.sql.expression",
+        "isExtraImport": true,
+        "detail": "sqlalchemy.sql.expression",
+        "documentation": {}
+    },
+    {
+        "label": "get_db",
+        "kind": 2,
+        "importPath": "app.database",
+        "description": "app.database",
+        "peekOfCode": "def get_db():\n    db = SessionLocal()\n    try:\n        yield db\n    finally:\n        db.close()",
+        "detail": "app.database",
+        "documentation": {}
+    },
+    {
+        "label": "SQLALCHEMY_DATABASE_URL",
+        "kind": 5,
+        "importPath": "app.database",
+        "description": "app.database",
+        "peekOfCode": "SQLALCHEMY_DATABASE_URL = 'postgresql://postgres:PassWord@localhost/python_api'\nengine = create_engine(SQLALCHEMY_DATABASE_URL)\nSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)\nBase = declarative_base()\n# Dependency\ndef get_db():\n    db = SessionLocal()\n    try:\n        yield db\n    finally:",
+        "detail": "app.database",
+        "documentation": {}
+    },
+    {
+        "label": "engine",
+        "kind": 5,
+        "importPath": "app.database",
+        "description": "app.database",
+        "peekOfCode": "engine = create_engine(SQLALCHEMY_DATABASE_URL)\nSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)\nBase = declarative_base()\n# Dependency\ndef get_db():\n    db = SessionLocal()\n    try:\n        yield db\n    finally:\n        db.close()",
+        "detail": "app.database",
+        "documentation": {}
+    },
+    {
+        "label": "SessionLocal",
+        "kind": 5,
+        "importPath": "app.database",
+        "description": "app.database",
+        "peekOfCode": "SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)\nBase = declarative_base()\n# Dependency\ndef get_db():\n    db = SessionLocal()\n    try:\n        yield db\n    finally:\n        db.close()",
+        "detail": "app.database",
+        "documentation": {}
+    },
+    {
+        "label": "Base",
+        "kind": 5,
+        "importPath": "app.database",
+        "description": "app.database",
+        "peekOfCode": "Base = declarative_base()\n# Dependency\ndef get_db():\n    db = SessionLocal()\n    try:\n        yield db\n    finally:\n        db.close()",
+        "detail": "app.database",
+        "documentation": {}
+    },
+    {
         "label": "Post",
         "kind": 6,
         "importPath": "app.main",
@@ -112,7 +237,7 @@
         "kind": 2,
         "importPath": "app.main",
         "description": "app.main",
-        "peekOfCode": "def find_index(id):\n    for i, post in enumerate(my_post):\n        if post[\"id\"] == id:\n            return i\n@app.get(\"/\")\ndef root():\n    return {\"message\": \"Welcome to my python api\"}\n@app.get(\"/posts\")\ndef get_post():\n    cursor.execute(\"\"\"SELECT * FROM posts\"\"\")",
+        "peekOfCode": "def find_index(id):\n    for i, post in enumerate(my_post):\n        if post[\"id\"] == id:\n            return i\n@app.get(\"/\")\ndef root():\n    return {\"message\": \"Welcome to my python api\"}\n# @app.get(\"/sqlalchemy\")\n# def test_alchemy(db: Session = Depends(get_db)):\n#     posts = db.query(models.Post).all()",
         "detail": "app.main",
         "documentation": {}
     },
@@ -121,7 +246,7 @@
         "kind": 2,
         "importPath": "app.main",
         "description": "app.main",
-        "peekOfCode": "def root():\n    return {\"message\": \"Welcome to my python api\"}\n@app.get(\"/posts\")\ndef get_post():\n    cursor.execute(\"\"\"SELECT * FROM posts\"\"\")\n    posts = cursor.fetchall()\n    return { \"data\": posts}\n@app.get(\"/posts/{id}\")\ndef get_post(id: int):\n    cursor.execute(\"\"\"SELECT * FROM posts WHERE id = %s \"\"\", (str(id)))",
+        "peekOfCode": "def root():\n    return {\"message\": \"Welcome to my python api\"}\n# @app.get(\"/sqlalchemy\")\n# def test_alchemy(db: Session = Depends(get_db)):\n#     posts = db.query(models.Post).all()\n#     return {\"data\": posts}\n@app.get(\"/posts\")\ndef get_post(db: Session = Depends(get_db)):\n    posts = db.query(models.Post).all()\n    # cursor.execute(\"\"\"SELECT * FROM posts\"\"\")",
         "detail": "app.main",
         "documentation": {}
     },
@@ -130,7 +255,7 @@
         "kind": 2,
         "importPath": "app.main",
         "description": "app.main",
-        "peekOfCode": "def get_post():\n    cursor.execute(\"\"\"SELECT * FROM posts\"\"\")\n    posts = cursor.fetchall()\n    return { \"data\": posts}\n@app.get(\"/posts/{id}\")\ndef get_post(id: int):\n    cursor.execute(\"\"\"SELECT * FROM posts WHERE id = %s \"\"\", (str(id)))\n    post = cursor.fetchone()\n    if not post:\n        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f\"post with id: {id} does not exist\")",
+        "peekOfCode": "def get_post(db: Session = Depends(get_db)):\n    posts = db.query(models.Post).all()\n    # cursor.execute(\"\"\"SELECT * FROM posts\"\"\")\n    # posts = cursor.fetchall()\n    return { \"data\": posts}\n@app.get(\"/posts/{id}\")\ndef get_post(id: int):\n    cursor.execute(\"\"\"SELECT * FROM posts WHERE id = %s \"\"\", (str(id)))\n    post = cursor.fetchone()\n    if not post:",
         "detail": "app.main",
         "documentation": {}
     },
@@ -166,7 +291,7 @@
         "kind": 2,
         "importPath": "app.main",
         "description": "app.main",
-        "peekOfCode": "def update_post(id: int, post: Post):\n    cursor.execute(\"\"\"UPDATE posts SET title = %s, content = %s, published = %s WHERE id = %s RETURNING *\"\"\", (post.title, post.content, post.published, (str(id))))\n    updted_post = cursor.fetchone()\n    conn.commit()\n    if updted_post == None:\n        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f\"post with id: {id} does not exist\")\n    return {\"data\": updted_post}",
+        "peekOfCode": "def update_post(id: int, post: Post):\n    cursor.execute(\"\"\"UPDATE posts SET title = %s, content = %s, published = %s WHERE id = %s RETURNING *\"\"\", (post.title, post.content, post.published, (str(id))))\n    updated_post = cursor.fetchone()\n    conn.commit()\n    if updated_post == None:\n        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f\"post with id: {id} does not exist\")\n    return {\"data\": updated_post}",
         "detail": "app.main",
         "documentation": {}
     },
@@ -186,6 +311,15 @@
         "description": "app.main",
         "peekOfCode": "my_post = [\n    {\n        \"id\": 1,\n        \"title\": \"Post 1\",\n        \"content\": \"Content of post 1\",\n    },\n    {\n        \"id\": 2,\n        \"title\": \"Post 2\",\n        \"content\": \"Content of post 2\",",
         "detail": "app.main",
+        "documentation": {}
+    },
+    {
+        "label": "Post",
+        "kind": 6,
+        "importPath": "app.models",
+        "description": "app.models",
+        "peekOfCode": "class Post(Base):\n    __tablename__ = \"posts\"\n    id = Column(Integer, primary_key=True, nullable=False)\n    title = Column(String, nullable=False)\n    content = Column(String, nullable=False)\n    published = Column(Boolean, default=True)",
+        "detail": "app.models",
         "documentation": {}
     }
 ]

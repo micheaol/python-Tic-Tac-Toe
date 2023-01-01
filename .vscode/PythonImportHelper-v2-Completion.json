@@ -128,6 +128,14 @@
         "documentation": {}
     },
     {
+        "label": "BaseModel",
+        "importPath": "pydantic",
+        "description": "pydantic",
+        "isExtraImport": true,
+        "detail": "pydantic",
+        "documentation": {}
+    },
+    {
         "label": "randrange",
         "importPath": "random",
         "description": "random",
@@ -231,15 +239,6 @@
         "documentation": {}
     },
     {
-        "label": "Post",
-        "kind": 6,
-        "importPath": "app.main",
-        "description": "app.main",
-        "peekOfCode": "class Post(BaseModel):\n    title: str\n    content: str\n    published: bool = False\n# Database connection:\nwhile True:\n    try:\n        conn = psycopg2.connect(host='localhost', database='python_api', user='postgres', password='PassWord', cursor_factory=RealDictCursor)\n        cursor = conn.cursor()\n        print('Database connection was successfull!')",
-        "detail": "app.main",
-        "documentation": {}
-    },
-    {
         "label": "find_post",
         "kind": 2,
         "importPath": "app.main",
@@ -271,7 +270,7 @@
         "kind": 2,
         "importPath": "app.main",
         "description": "app.main",
-        "peekOfCode": "def get_post(db: Session = Depends(get_db)):\n    posts = db.query(models.Post).all()\n    # cursor.execute(\"\"\"SELECT * FROM posts\"\"\")\n    # posts = cursor.fetchall()\n    return { \"data\": posts}\n@app.get(\"/posts/{id}\")\ndef get_post(id: int, db: Session = Depends(get_db)):\n    # cursor.execute(\"\"\"SELECT * FROM posts WHERE id = %s \"\"\", (str(id)))\n    # post = cursor.fetchone()\n    post = db.query(models.Post).filter(models.Post.id == id).first()",
+        "peekOfCode": "def get_post(db: Session = Depends(get_db)):\n    posts = db.query(models.Post).all()\n    # cursor.execute(\"\"\"SELECT * FROM posts\"\"\")\n    # posts = cursor.fetchall()\n    return posts\n@app.get(\"/posts/{id}\")\ndef get_post(id: int, db: Session = Depends(get_db)):\n    # cursor.execute(\"\"\"SELECT * FROM posts WHERE id = %s \"\"\", (str(id)))\n    # post = cursor.fetchone()\n    post = db.query(models.Post).filter(models.Post.id == id).first()",
         "detail": "app.main",
         "documentation": {}
     },
@@ -280,7 +279,7 @@
         "kind": 2,
         "importPath": "app.main",
         "description": "app.main",
-        "peekOfCode": "def get_post(id: int, db: Session = Depends(get_db)):\n    # cursor.execute(\"\"\"SELECT * FROM posts WHERE id = %s \"\"\", (str(id)))\n    # post = cursor.fetchone()\n    post = db.query(models.Post).filter(models.Post.id == id).first()\n    if not post:\n        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f\"post with id: {id} does not exist\")\n    return {\"data\": post}\n@app.post(\"/posts\", status_code=status.HTTP_201_CREATED)\ndef create_post(post: Post, db: Session = Depends(get_db)):\n    #  cursor.execute(\"\"\"INSERT INTO posts (title, content, published) VALUES (%s, %s, %s) RETURNING * \"\"\", (post.title, post.content, post.published))",
+        "peekOfCode": "def get_post(id: int, db: Session = Depends(get_db)):\n    # cursor.execute(\"\"\"SELECT * FROM posts WHERE id = %s \"\"\", (str(id)))\n    # post = cursor.fetchone()\n    post = db.query(models.Post).filter(models.Post.id == id).first()\n    if not post:\n        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f\"post with id: {id} does not exist\")\n    return post\n@app.post(\"/posts\", status_code=status.HTTP_201_CREATED, response_model=schemas.Post)\ndef create_post(post: schemas.PostCreate, db: Session = Depends(get_db)):\n    #  cursor.execute(\"\"\"INSERT INTO posts (title, content, published) VALUES (%s, %s, %s) RETURNING * \"\"\", (post.title, post.content, post.published))",
         "detail": "app.main",
         "documentation": {}
     },
@@ -289,7 +288,7 @@
         "kind": 2,
         "importPath": "app.main",
         "description": "app.main",
-        "peekOfCode": "def create_post(post: Post, db: Session = Depends(get_db)):\n    #  cursor.execute(\"\"\"INSERT INTO posts (title, content, published) VALUES (%s, %s, %s) RETURNING * \"\"\", (post.title, post.content, post.published))\n    #  new_post = cursor.fetchone()\n    #  conn.commit()\n     new_post = models.Post(title=post.title, content=post.content, published=post.published)\n     db.add(new_post)\n     db.commit()\n     db.refresh(new_post)\n     return {\"data\": new_post}\n@app.delete(\"/posts/{id}\", status_code= status.HTTP_204_NO_CONTENT)",
+        "peekOfCode": "def create_post(post: schemas.PostCreate, db: Session = Depends(get_db)):\n    #  cursor.execute(\"\"\"INSERT INTO posts (title, content, published) VALUES (%s, %s, %s) RETURNING * \"\"\", (post.title, post.content, post.published))\n    #  new_post = cursor.fetchone()\n    #  conn.commit()\n     new_post = models.Post(title=post.title, content=post.content, published=post.published)\n     db.add(new_post)\n     db.commit()\n     db.refresh(new_post)\n     return new_post\n@app.delete(\"/posts/{id}\", status_code= status.HTTP_204_NO_CONTENT)",
         "detail": "app.main",
         "documentation": {}
     },
@@ -307,7 +306,7 @@
         "kind": 2,
         "importPath": "app.main",
         "description": "app.main",
-        "peekOfCode": "def update_post(id: int, post: Post, db: Session = Depends(get_db)):\n    # cursor.execute(\"\"\"UPDATE posts SET title = %s, content = %s, published = %s WHERE id = %s RETURNING *\"\"\", (post.title, post.content, post.published, (str(id))))\n    # updated_post = cursor.fetchone()\n    # conn.commit()\n    post_query = db.query(models.Post).filter(models.Post.id == id)\n    post = post_query.first()\n    if post == None:\n        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f\"post with id: {id} does not exist\")\n    post_query.update(post.dict(), synchronize_session=False)\n    db.commit()",
+        "peekOfCode": "def update_post(id: int, updated_post: schemas.PostCreate, db: Session = Depends(get_db)):\n    # cursor.execute(\"\"\"UPDATE posts SET title = %s, content = %s, published = %s WHERE id = %s RETURNING *\"\"\", (post.title, post.content, post.published, (str(id))))\n    # updated_post = cursor.fetchone()\n    # conn.commit()\n    post_query = db.query(models.Post).filter(models.Post.id == id)\n    post = post_query.first()\n    if post == None:\n        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f\"post with id: {id} does not exist\")\n    post_query.update(updated_post.dict(), synchronize_session=False)\n    db.commit()",
         "detail": "app.main",
         "documentation": {}
     },
@@ -316,7 +315,7 @@
         "kind": 5,
         "importPath": "app.main",
         "description": "app.main",
-        "peekOfCode": "app = FastAPI()\nclass Post(BaseModel):\n    title: str\n    content: str\n    published: bool = False\n# Database connection:\nwhile True:\n    try:\n        conn = psycopg2.connect(host='localhost', database='python_api', user='postgres', password='PassWord', cursor_factory=RealDictCursor)\n        cursor = conn.cursor()",
+        "peekOfCode": "app = FastAPI()\n# Database connection:\nwhile True:\n    try:\n        conn = psycopg2.connect(host='localhost', database='python_api', user='postgres', password='PassWord', cursor_factory=RealDictCursor)\n        cursor = conn.cursor()\n        print('Database connection was successfull!')\n        break\n    except Exception as error:\n        print(\"Database connection failed\")",
         "detail": "app.main",
         "documentation": {}
     },
@@ -336,6 +335,33 @@
         "description": "app.models",
         "peekOfCode": "class Post(Base):\n    __tablename__ = \"posts\"\n    id = Column(Integer, primary_key=True, nullable=False)\n    title = Column(String, nullable=False)\n    content = Column(String, nullable=False)\n    published = Column(Boolean, server_default='TRUE', nullable=False)\n    created_at = Column(TIMESTAMP(timezone=True), nullable= False, server_default=text('now()'))",
         "detail": "app.models",
+        "documentation": {}
+    },
+    {
+        "label": "PostBase",
+        "kind": 6,
+        "importPath": "app.schemas",
+        "description": "app.schemas",
+        "peekOfCode": "class PostBase(BaseModel):\n    title: str\n    content: str\n    published: bool = False\nclass PostCreate(PostBase):\n    pass\nclass Post(BaseModel):\n    title: str\n    content: str\n    published: bool",
+        "detail": "app.schemas",
+        "documentation": {}
+    },
+    {
+        "label": "PostCreate",
+        "kind": 6,
+        "importPath": "app.schemas",
+        "description": "app.schemas",
+        "peekOfCode": "class PostCreate(PostBase):\n    pass\nclass Post(BaseModel):\n    title: str\n    content: str\n    published: bool\n    class Config:\n        orm_mode = True",
+        "detail": "app.schemas",
+        "documentation": {}
+    },
+    {
+        "label": "Post",
+        "kind": 6,
+        "importPath": "app.schemas",
+        "description": "app.schemas",
+        "peekOfCode": "class Post(BaseModel):\n    title: str\n    content: str\n    published: bool\n    class Config:\n        orm_mode = True",
+        "detail": "app.schemas",
         "documentation": {}
     }
 ]

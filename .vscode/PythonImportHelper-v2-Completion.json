@@ -278,7 +278,7 @@
         "kind": 2,
         "importPath": "app.main",
         "description": "app.main",
-        "peekOfCode": "def get_post(db: Session = Depends(get_db)):\n    posts = db.query(models.Post).all()\n    # cursor.execute(\"\"\"SELECT * FROM posts\"\"\")\n    # posts = cursor.fetchall()\n    return posts\n@app.get(\"/posts/{id}\")\ndef get_post(id: int, db: Session = Depends(get_db)):\n    # cursor.execute(\"\"\"SELECT * FROM posts WHERE id = %s \"\"\", (str(id)))\n    # post = cursor.fetchone()\n    post = db.query(models.Post).filter(models.Post.id == id).first()",
+        "peekOfCode": "def get_post(db: Session = Depends(get_db)):\n    posts = db.query(models.Post).all()\n    # cursor.execute(\"\"\"SELECT * FROM posts\"\"\")\n    # posts = cursor.fetchall()\n    return posts\n@app.get(\"/posts/{id}\", response_model=schemas.Post)\ndef get_post(id: int, db: Session = Depends(get_db)):\n    # cursor.execute(\"\"\"SELECT * FROM posts WHERE id = %s \"\"\", (str(id)))\n    # post = cursor.fetchone()\n    post = db.query(models.Post).filter(models.Post.id == id).first()",
         "detail": "app.main",
         "documentation": {}
     },
@@ -350,7 +350,7 @@
         "kind": 6,
         "importPath": "app.schemas",
         "description": "app.schemas",
-        "peekOfCode": "class PostBase(BaseModel):\n    title: str\n    content: str\n    published: bool = False\nclass PostCreate(PostBase):\n    pass\nclass Post(BaseModel):\n    id: int\n    title: str\n    content: str",
+        "peekOfCode": "class PostBase(BaseModel):\n    title: str\n    content: str\n    published: bool = False\nclass PostCreate(PostBase):\n    pass\nclass Post(PostBase):\n    id: int\n    created_at: datetime\n    class Config:",
         "detail": "app.schemas",
         "documentation": {}
     },
@@ -359,7 +359,7 @@
         "kind": 6,
         "importPath": "app.schemas",
         "description": "app.schemas",
-        "peekOfCode": "class PostCreate(PostBase):\n    pass\nclass Post(BaseModel):\n    id: int\n    title: str\n    content: str\n    published: bool\n    created_at: datetime\n    class Config:\n        orm_mode = True",
+        "peekOfCode": "class PostCreate(PostBase):\n    pass\nclass Post(PostBase):\n    id: int\n    created_at: datetime\n    class Config:\n        orm_mode = True",
         "detail": "app.schemas",
         "documentation": {}
     },
@@ -368,7 +368,7 @@
         "kind": 6,
         "importPath": "app.schemas",
         "description": "app.schemas",
-        "peekOfCode": "class Post(BaseModel):\n    id: int\n    title: str\n    content: str\n    published: bool\n    created_at: datetime\n    class Config:\n        orm_mode = True",
+        "peekOfCode": "class Post(PostBase):\n    id: int\n    created_at: datetime\n    class Config:\n        orm_mode = True",
         "detail": "app.schemas",
         "documentation": {}
     }

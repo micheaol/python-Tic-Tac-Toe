@@ -194,6 +194,14 @@
         "documentation": {}
     },
     {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
         "label": "get_db",
         "kind": 2,
         "importPath": "app.database",
@@ -342,7 +350,7 @@
         "kind": 6,
         "importPath": "app.schemas",
         "description": "app.schemas",
-        "peekOfCode": "class PostBase(BaseModel):\n    title: str\n    content: str\n    published: bool = False\nclass PostCreate(PostBase):\n    pass\nclass Post(BaseModel):\n    title: str\n    content: str\n    published: bool",
+        "peekOfCode": "class PostBase(BaseModel):\n    title: str\n    content: str\n    published: bool = False\nclass PostCreate(PostBase):\n    pass\nclass Post(BaseModel):\n    id: int\n    title: str\n    content: str",
         "detail": "app.schemas",
         "documentation": {}
     },
@@ -351,7 +359,7 @@
         "kind": 6,
         "importPath": "app.schemas",
         "description": "app.schemas",
-        "peekOfCode": "class PostCreate(PostBase):\n    pass\nclass Post(BaseModel):\n    title: str\n    content: str\n    published: bool\n    class Config:\n        orm_mode = True",
+        "peekOfCode": "class PostCreate(PostBase):\n    pass\nclass Post(BaseModel):\n    id: int\n    title: str\n    content: str\n    published: bool\n    created_at: datetime\n    class Config:\n        orm_mode = True",
         "detail": "app.schemas",
         "documentation": {}
     },
@@ -360,7 +368,7 @@
         "kind": 6,
         "importPath": "app.schemas",
         "description": "app.schemas",
-        "peekOfCode": "class Post(BaseModel):\n    title: str\n    content: str\n    published: bool\n    class Config:\n        orm_mode = True",
+        "peekOfCode": "class Post(BaseModel):\n    id: int\n    title: str\n    content: str\n    published: bool\n    created_at: datetime\n    class Config:\n        orm_mode = True",
         "detail": "app.schemas",
         "documentation": {}
     }

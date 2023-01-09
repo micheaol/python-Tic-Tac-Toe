@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 from fastapi import FastAPI, Response, status, HTTPException, Depends
 from fastapi.params import Body
 from pydantic import BaseModel
@@ -68,7 +68,7 @@ def root():
 #     posts = db.query(models.Post).all()
 #     return {"data": posts}
 
-@app.get("/posts")
+@app.get("/posts" , response_model= List[schemas.Post])
 def get_post(db: Session = Depends(get_db)):
 
     posts = db.query(models.Post).all()
@@ -110,10 +110,7 @@ def create_post(post: schemas.PostCreate, db: Session = Depends(get_db)):
 @app.delete("/posts/{id}", status_code= status.HTTP_204_NO_CONTENT)
 def delete_post(id: int, db: Session = Depends(get_db)):
 
-    # cursor.execute("""DELETE FROM posts WHERE id = %s RETURNING * """, (str(id),))
 
-    # deleted_post = cursor.fetchone()
-    # conn.commit()
     post = db.query(models.Post).filter(models.Post.id == id)
     
     if post.first() == None:

@@ -14,3 +14,11 @@ class Post(Base):
     content = Column(String, nullable=False)
     published = Column(Boolean, server_default='TRUE', nullable=False)
     created_at = Column(TIMESTAMP(timezone=True), nullable= False, server_default=text('now()'))
+
+# class User(Base):
+#     __table__ = "users"
+
+#     id = Column(Integer, primary_key=True, nullable=False)
+#     email = Column(String, nollable=False, unique=True)
+#     password = Column(String, nollable=False)
+#     created_at = Column(TIMESTAMP(timezone=True), nullable= False, server_default=text('now()'))

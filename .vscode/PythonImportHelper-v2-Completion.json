@@ -72,6 +72,14 @@
         "documentation": {}
     },
     {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
         "label": "FastAPI",
         "importPath": "fastapi",
         "description": "fastapi",
@@ -269,7 +277,7 @@
         "kind": 2,
         "importPath": "app.main",
         "description": "app.main",
-        "peekOfCode": "def root():\n    return {\"message\": \"Welcome to my python api\"}\n# @app.get(\"/sqlalchemy\")\n# def test_alchemy(db: Session = Depends(get_db)):\n#     posts = db.query(models.Post).all()\n#     return {\"data\": posts}\n@app.get(\"/posts\")\ndef get_post(db: Session = Depends(get_db)):\n    posts = db.query(models.Post).all()\n    # cursor.execute(\"\"\"SELECT * FROM posts\"\"\")",
+        "peekOfCode": "def root():\n    return {\"message\": \"Welcome to my python api\"}\n# @app.get(\"/sqlalchemy\")\n# def test_alchemy(db: Session = Depends(get_db)):\n#     posts = db.query(models.Post).all()\n#     return {\"data\": posts}\n@app.get(\"/posts\" , response_model= List[schemas.Post])\ndef get_post(db: Session = Depends(get_db)):\n    posts = db.query(models.Post).all()\n    # cursor.execute(\"\"\"SELECT * FROM posts\"\"\")",
         "detail": "app.main",
         "documentation": {}
     },
@@ -341,7 +349,7 @@
         "kind": 6,
         "importPath": "app.models",
         "description": "app.models",
-        "peekOfCode": "class Post(Base):\n    __tablename__ = \"posts\"\n    id = Column(Integer, primary_key=True, nullable=False)\n    title = Column(String, nullable=False)\n    content = Column(String, nullable=False)\n    published = Column(Boolean, server_default='TRUE', nullable=False)\n    created_at = Column(TIMESTAMP(timezone=True), nullable= False, server_default=text('now()'))",
+        "peekOfCode": "class Post(Base):\n    __tablename__ = \"posts\"\n    id = Column(Integer, primary_key=True, nullable=False)\n    title = Column(String, nullable=False)\n    content = Column(String, nullable=False)\n    published = Column(Boolean, server_default='TRUE', nullable=False)\n    created_at = Column(TIMESTAMP(timezone=True), nullable= False, server_default=text('now()'))\n# class User(Base):\n#     __table__ = \"users\"\n#     id = Column(Integer, primary_key=True, nullable=False)",
         "detail": "app.models",
         "documentation": {}
     },
